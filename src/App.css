@@ -204,29 +204,15 @@
 }
 
 .brand__mark {
-  width: 11px;
-  height: 11px;
-  border-radius: 4px;
-  background: linear-gradient(135deg, var(--accent), var(--accent-3), var(--accent-2));
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center top;
+  border: 2px solid rgba(92, 245, 208, 0.35);
   box-shadow:
-    0 0 22px rgba(92, 245, 208, 0.45),
-    0 0 36px rgba(255, 126, 179, 0.2);
-  animation: mark-glow 4s var(--ease-out) infinite alternate;
-}
-
-@keyframes mark-glow {
-  from {
-    filter: hue-rotate(0deg);
-    box-shadow:
-      0 0 22px rgba(92, 245, 208, 0.45),
-      0 0 28px rgba(255, 126, 179, 0.18);
-  }
-  to {
-    filter: hue-rotate(12deg);
-    box-shadow:
-      0 0 26px rgba(196, 168, 255, 0.4),
-      0 0 32px rgba(92, 245, 208, 0.25);
-  }
+    0 0 18px rgba(92, 245, 208, 0.25),
+    0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .brand:hover .brand__text {
@@ -296,10 +282,6 @@
     transform: none;
     filter: none;
     transition: none;
-  }
-
-  .brand__mark {
-    animation: none !important;
   }
 
   .hero--intro .hero__grid {

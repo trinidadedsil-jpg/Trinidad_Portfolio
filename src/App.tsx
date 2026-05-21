@@ -246,7 +246,7 @@ function App() {
       <div className="shell">
         <header className={`site-header${scrolled ? ' is-scrolled' : ''}`}>
           <a className="brand" href="#top">
-            <span className="brand__mark" aria-hidden="true" />
+            <img className="brand__mark" src={site.portraitSrc} alt="" />
             <span className="brand__text">{site.name}</span>
           </a>
           <div className="site-header__actions">
