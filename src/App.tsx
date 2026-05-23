@@ -129,6 +129,7 @@ function App() {
       : 'dark',
   )
   const [scrolled, setScrolled] = useState(false)
+  const [navOpen, setNavOpen] = useState(false)
   const [certModal, setCertModal] = useState<Certificate | null>(null)
   const [gameOpen, setGameOpen] = useState(false)
 
@@ -170,6 +171,33 @@ function App() {
 
     nodes.forEach((el) => io.observe(el))
     return () => io.disconnect()
+  }, [])
+
+  useEffect(() => {
+    if (!navOpen) return
+
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setNavOpen(false)
+    }
+    window.addEventListener('keydown', onKeyDown)
+
+    return () => {
+      document.body.style.overflow = prevOverflow
+      window.removeEventListener('keydown', onKeyDown)
+    }
+  }, [navOpen])
+
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 900px)')
+    const onChange = () => {
+      if (mq.matches) setNavOpen(false)
+    }
+    onChange()
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
   }, [])
 
   useEffect(() => {
@@ -244,12 +272,49 @@ function App() {
       <div className="bg-noise" aria-hidden="true" />
 
       <div className="shell">
-        <header className={`site-header${scrolled ? ' is-scrolled' : ''}`}>
-          <a className="brand" href="#top">
+        <header
+          className={`site-header${scrolled ? ' is-scrolled' : ''}${navOpen ? ' is-nav-open' : ''}`}
+        >
+          <a className="brand" href="#top" onClick={() => setNavOpen(false)}>
             <img className="brand__mark" src={site.portraitSrc} alt="" />
             <span className="brand__text">{site.name}</span>
           </a>
-          <div className="site-header__actions">
+
+          <div
+            className={`nav-backdrop${navOpen ? ' is-visible' : ''}`}
+            aria-hidden={!navOpen}
+            onClick={() => setNavOpen(false)}
+          />
+
+          <nav
+            id="primary-nav"
+            className={`nav${navOpen ? ' is-open' : ''}`}
+            aria-label="Primary"
+          >
+            <a href="#about" onClick={() => setNavOpen(false)}>
+              About
+            </a>
+            <a href="#education" onClick={() => setNavOpen(false)}>
+              Education
+            </a>
+            <a href="#experience" onClick={() => setNavOpen(false)}>
+              Experience
+            </a>
+            <a href="#skills" onClick={() => setNavOpen(false)}>
+              Skills
+            </a>
+            <a href="#projects" onClick={() => setNavOpen(false)}>
+              Projects
+            </a>
+            <a href="#certificates" onClick={() => setNavOpen(false)}>
+              Certificates
+            </a>
+            <a href="#contact" onClick={() => setNavOpen(false)}>
+              Contact
+            </a>
+          </nav>
+
+          <div className="site-header__tools">
             <button
               type="button"
               className="theme-toggle"
@@ -279,15 +344,22 @@ function App() {
                 </svg>
               )}
             </button>
-            <nav className="nav" aria-label="Primary">
-              <a href="#about">About</a>
-              <a href="#education">Education</a>
-              <a href="#experience">Experience</a>
-              <a href="#skills">Skills</a>
-              <a href="#projects">Projects</a>
-              <a href="#certificates">Certificates</a>
-              <a href="#contact">Contact</a>
-            </nav>
+            <button
+              type="button"
+              className={`nav-toggle${navOpen ? ' is-active' : ''}`}
+              aria-expanded={navOpen}
+              aria-controls="primary-nav"
+              onClick={() => setNavOpen((open) => !open)}
+            >
+              <span className="nav-toggle__bars" aria-hidden="true">
+                <span />
+                <span />
+                <span />
+              </span>
+              <span className="visually-hidden">
+                {navOpen ? 'Close menu' : 'Open menu'}
+              </span>
+            </button>
           </div>
         </header>
 
